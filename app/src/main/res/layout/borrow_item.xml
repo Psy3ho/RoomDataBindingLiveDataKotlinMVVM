@@ -14,6 +14,7 @@
             name="callback"
             type="com.example.roomdatabindinglivedatakotlinmvvm.view.callback.DeleteItemCallback" />
 
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -69,7 +70,7 @@
             android:onClick="@{()->callback.onClick(borrowModel)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/personNameTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/personNameTextView"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

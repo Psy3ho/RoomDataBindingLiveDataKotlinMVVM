@@ -3,12 +3,14 @@ package com.example.roomdatabindinglivedatakotlinmvvm.view.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.roomdatabindinglivedatakotlinmvvm.R
 import com.example.roomdatabindinglivedatakotlinmvvm.databinding.ActivityMainBinding
+import com.example.roomdatabindinglivedatakotlinmvvm.databinding.BorrowItemBinding
 import com.example.roomdatabindinglivedatakotlinmvvm.db.entity.BorrowModel
 import com.example.roomdatabindinglivedatakotlinmvvm.view.adapter.RecyclerViewAdapter
 import com.example.roomdatabindinglivedatakotlinmvvm.view.callback.AddItemCallback
@@ -29,10 +31,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val deleteItemCallback = object : DeleteItemCallback {
-        override fun onClick(borrowModel: BorrowModel) {
+        override  fun onClick(borrowModel: BorrowModel) {
             borrowedListViewModel!!.deleteItemLiveData(borrowModel)
         }
     }
+
+
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding!!.root
 
         observe()
+        observeDelete()
 
 
         activityMainBinding!!.callback = mAddItemCallback
@@ -62,8 +67,24 @@ class MainActivity : AppCompatActivity() {
     private fun observe() {
         borrowedListViewModel!!.getListLiveData().observe(this, Observer{ borrowModelList ->
             if (borrowModelList != null) {
+                activityMainBinding!!.deleting = true
                 recyclerViewAdapter!!.setItemList(borrowModelList)
                 activityMainBinding!!.executePendingBindings()
+            } else {
+                activityMainBinding!!.deleting = false
+            }
+        })
+    }
+
+    private fun observeDelete() {
+        borrowedListViewModel!!.getStatusLiveDataDelete().observe(this , Observer { status ->
+            status?.let {
+                activityMainBinding!!.deleting = status
+              /*  Toast.makeText(this,(if(status) {
+                    "vsetko v poradecku"
+                }else {
+                    "deleting"
+                }),Toast.LENGTH_LONG).show()*/
             }
         })
     }
